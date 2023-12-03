@@ -10,6 +10,13 @@ const guestList = document.querySelector(".guest-list");
 const guestCount = document.querySelector(".attendance");
 // alert when guest list is full (not yet visible)
 const guestFull = document.querySelector(".alert");
+// select button that appears when guest list is full
+const assignButton = document.querySelector(".assign");
+// select ul for list of assigned dishes
+const assignedItems = document.querySelector(".assigned-items");
+
+
+
 
 // Gather the text entered in the form
 addGuestButton.addEventListener("click", function() {
@@ -18,8 +25,8 @@ addGuestButton.addEventListener("click", function() {
     // Check for no input and put input into innerText of li and append to end of list
     if (guest !=="") {
         addToList(guest);
-        clearInput();
         updateGuestCount();
+        clearInput();
     }
 });
 
@@ -42,3 +49,38 @@ const updateGuestCount = function () {
        guestFull.classList.remove("hide"); 
     }
 };
+
+const assignItems = function () {
+    const potluckItems = [
+        "rice",
+        "ramen noodles",
+        "chicken",
+        "avocados",
+        "white wine",
+        "soft cooked eggs",
+        "tofu",
+        "sea weed sheets",
+        "pork meatballs",
+        "baby bok choi",
+        "edamame",
+        "basil",
+        "crushed peanuts"
+    ];
+    const allGuests = document.querySelectorAll(".guest-list li");
+
+    for (let guest of allGuests) {
+        let randomPotluckIndex = Math.floor(Math.random() * potluckItems.length);
+    // using the random number generator to fill array index number
+        let randomPotluckItem = potluckItems[randomPotluckIndex];
+        let listItem = document.createElement("li");
+        listItem.innerText = `${guest.innerText} is bringing ${randomPotluckItem}`;
+        assignedItems.append(listItem);
+    // remove the food item just assigned from array
+        potluckItems.splice(randomPotluckIndex, 1);
+    }
+};
+
+assignButton.addEventListener("click", function() {
+    assignItems();
+    assignButton.disabled = true;
+});
